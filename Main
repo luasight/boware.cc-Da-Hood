@@ -1,0 +1,172 @@
+----------- //  Da Hood // ----------- 
+---------------------------------------
+
+----- // Function 1 // -----
+
+----- // Function 2 // -----
+
+----- // Function 3 // -----
+
+----- // Function 4 // -----
+
+----------------------------------------------------------------------------------------------------------------------------------------
+----- // UI Stuff // -----
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/luasight/boware.cc-Libary/main/Main"))()
+----------------------------------------------------------------------------------------------------------------------------------------
+local Window = Library:New({Name = "boware.cc | 0.0.0 | Da Hood", Size = Vector2.new(497, 605), Accent = Color3.fromRGB(73, 82, 82)})
+----------------------------------------------------------------------------------------------------------------------------------------
+----- // Tabs // -----
+----------------------------------------------------------------------------------------------------------------------------------------
+local Aimbot = Window:Page({Name = "Aimbot"})
+local Visuals = Window:Page({Name = "Visuals"})
+local Player = Window:Page({Name = "Player"})
+local Teleports = Window:Page({Name = "Teleports"})
+local Miscellaneous = Window:Page({Name = "Miscellaneous"})
+local Settings = Window:Page({Name = "Settings"})
+--------------------------------------------------------------------------------------
+----- // Windows // -----
+--------------------------------------------------------------------------------------
+local A1 = Aimbot:Section({Name = "Window 1", Side = "Left"})
+--------------------------------------------------------------------------------------
+local ESP = Visuals:Section({Name = "ESP", Side = "Left"})
+local Local = Visuals:Section({Name = "Local", Side = "Left"})
+local World = Visuals:Section({Name = "World", Side = "Left"})
+
+
+--------------------------------------------------------------------------------------
+local Movement = Player:Section({Name = "Movement", Side = "Left"})
+local Testing = Player:Section({Name = "Testing", Side = "Right"})
+
+--------------------------------------------------------------------------------------
+local Spawn_Locations = Teleports:Section({Name = "Spawn Locations", Side = "Left"})
+local Turf_Locations = Teleports:Section({Name = "Extra Locations", Side = "Right"})
+local Extra = Teleports:Section({Name = "Docks Locations", Side = "Left"})
+local Player_Locations = Teleports:Section({Name = "Reactor Locations", Side = "Right"})
+--------------------------------------------------------------------------------------
+local Stuff = Miscellaneous:Section({Name = "Stuff", Side = "Left"})
+--------------------------------------------------------------------------------------
+local Settings_Main = Settings:Section({Name = "Main", Side = "Left"})
+--------------------------------------------------------------------------------------
+
+--- // Tab A1 Window 1 // ---
+
+--- // ESP // ---
+ESP:Toggle({Name = "Enable", Default = false, Pointer = "", Callback = function(Value) ESP.Enabled = true end})
+ESP:Toggle({Name = "Boxes", Default = false, Pointer = "", Callback = function(Value) ESP.Boxes = true end}):Colorpicker({Name = "Boxes Color", Info = "", Alpha = 0, Default = Color3.fromRGB(255, 0, 0), Pointer = ""})
+ESP:Toggle({Name = "Names", Default = false, Pointer = ""}):Colorpicker({Name = "Name Color", Info = "", Alpha = 0, Default = Color3.fromRGB(255, 0, 0), Pointer = ""})
+ESP:Toggle({Name = "Health Bar", Default = false, Pointer = ""}):Colorpicker({Name = "Health Color", Info = "", Alpha = 0, Default = Color3.fromRGB(255, 0, 0), Pointer = ""})
+ESP:Toggle({Name = "Tracers", Default = false, Pointer = ""}):Colorpicker({Name = "Tracers Color", Info = "", Alpha = 0, Default = Color3.fromRGB(255, 0, 0), Pointer = ""})
+ESP:Label({Name = "Extras", Pointer = "AimbotMain_Enabled"})
+ESP:Toggle({Name = "Face Camera", Default = false, Pointer = ""})
+ESP:Toggle({Name = "Distance", Default = false, Pointer = ""}):Colorpicker({Name = "Distance Color", Info = "", Alpha = 0, Default = Color3.fromRGB(255, 0, 0), Pointer = ""})
+ESP:Slider({Name = "Distance Limit", Minimum = 1, Maximum = 30, Default = 1.5, Decimals = 0.1, Pointer = ""})
+--- // Local // ---
+
+local MapLightingJmp = Instance.new("ColorCorrectionEffect")
+MapLightingJmp.Parent = game:GetService("Lighting")
+MapLightingJmp.Enabled = false
+MapLightingJmp.Brightness = 0
+MapLightingJmp.Contrast = 0
+MapLightingJmp.Saturation = 0
+MapLightingJmp.TintColor = Color3.fromRGB(255, 255, 255)
+--- // World // ---
+
+World:Colorpicker({Name = "Atmosphere Color", Info = "", Alpha = 0, Default = Color3.fromRGB(255, 255, 255), Pointer = "", Callback = function(Value)
+      game:GetService("Lighting").FogColor = Value
+end})
+
+World:Toggle({Name = "Ambience", Default = false, Pointer = "", Callback = function(Value) MapLightingJmp.Enabled = Value end}):Colorpicker({Name = "Distance Color", Info = "", Alpha = 0, Default = Color3.fromRGB(255, 255, 255), Pointer = "", Callback = function(Value) 
+          MapLightingJmp.TintColor = Value
+end})
+
+
+
+
+World:Slider({Name = "Atmosphere", Minimum = 100, Maximum = 3000, Default = 500, Decimals = 0.1, Pointer = "", Callback = function(x)
+    game:GetService("Lighting").FogEnd = x
+end})
+
+local l = game:GetService("Lighting")
+
+local col = Instance.new("ColorCorrectionEffect", l)
+
+World:Slider({Name = "Brightness", Minimum = -1, Maximum = 1, Default = 0, Decimals = 0.1, Pointer = "", Callback = function(Value)
+col.Brightness = Value
+end})
+
+World:Slider({Name = "Contrast", Minimum = -1, Maximum = 1, Default = 0, Decimals = 0.1, Pointer = "", Callback = function(Value)
+col.Contrast = Value
+
+end})
+
+World:Slider({Name = "Saturation", Minimum = -1, Maximum = 1, Default = 0, Decimals = 0.1, Pointer = "", Callback = function(Value)
+col.Saturation = Value
+end})
+
+
+
+--- // Movement // ---
+
+	
+			
+Movement:Toggle({Name = "Enable Walkspeed", Default = false, Pointer = "", Callback = function()
+    	local userInput = game:service('UserInputService')
+			local runService = game:service('RunService')
+			
+			userInput.InputBegan:connect(function(Key)
+				if Key.KeyCode == getgenv().CFrameSpeedKey then
+					Enabled = not Enabled
+					if Enabled == true then
+						repeat
+							game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame + game.Players.LocalPlayer.Character.Humanoid.MoveDirection * getgenv().Multiplier
+							runService.Stepped:wait()
+						until Enabled == false
+					end
+				end
+			end)
+    end})
+
+Movement:Keybind({Name = "Walkspeed Keybind", Default = Enum.KeyCode.E, KeybindName = "", Mode = "Toggle", Pointer = "AimbotExtra_Readjustment", Callback = function(arg)
+getgenv().CFrameSpeedKey = arg
+    end})
+Movement:Slider({Name = "Walkspeed Value", Minimum = 0.1, Maximum = 1, Default = 0.5, Decimals = 0.1, Pointer = "AimbotMain_Smoothness", Callback = function(Value)
+      getgenv().Multiplier = Value
+end})
+
+
+
+--- // Testing // ---
+
+
+Testing:Toggle({Name = "Spinbot", Default = false, Pointer = "", Callback = function(Value) 
+getgenv().Spinbot = Value
+if getgenv().Spinbot == true then
+repeat
+    task.wait()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame =
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(555), 0)
+until getgenv().Spinbot == false
+    end
+    end})
+
+
+--- // Spawn Locations // ---
+
+--- // Turf Locations // ---
+
+--- // Extra Locations // ---
+
+--- // Player Locations // ---
+ 
+--- // Stuff // ---
+Stuff:Button({Name = "Open Sewer Door", Default = false, Pointer = ""})
+
+--- // ESP LIBARY // ---
+
+--- // Settings // ---
+
+Settings_Main:ConfigBox({})
+Settings_Main:ButtonHolder({Buttons = {{"Load", function() end}, {"Save", function() end}}})
+Settings_Main:Label({Name = "Unloading will fully unload\neverything, so save your\nconfig before unloading.", Middle = true})
+Settings_Main:Button({Name = "Unload", Callback = function() Window:Unload() end})
+Window:Initialize()
